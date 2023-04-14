@@ -1,0 +1,36 @@
+%loading stitch images
+GSUDir1 = fullfile("stitch 1/");
+GSUScene1 = imageDatastore(GSUDir1);
+
+% Display images to be stitched.
+montage(GSUScene1.Files);
+
+%reading first image from our set
+I = readimage(GSUScene1,1);
+
+%initialize features for I(1)
+grayImage =  im2gray(I);
+points = detectSURFFeatures(grayImage,point);
+
+%initialize all the transformations to the identity matrix
+numImages = numel(GSUScene1.Files);
+tforms(numImages) = projtform2d;
+
+%initialize variable to hold image size
+imageSize = zeros(numImages,2);
+
+%iterate over remaining image pairs
+for n = 2:numImages
+    %store points and features for I(n-1)
+    pointsPrevios = points;
+    featuresPrevious = features;
+
+    %read I(n)
+    I = readImage(GSUScene1, n);
+
+    %convert to grayscale 
+    grayImage = im2gray(I);
+
+    %save image size 
+    imageSize(n,:) = size(gr)
+
